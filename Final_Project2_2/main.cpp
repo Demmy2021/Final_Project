@@ -17,6 +17,8 @@ int main()
     while(game.running() && !game.getEndGame()){
 
 
+
+
         //game update
         game.update();
 
