@@ -11,13 +11,6 @@ CONFIG(debug, debug|release){
 } else {
     LIBS += -lsfml-audio -lsfml-graphics -lsfml-network -lsfml-system -lsfml-window
 }
-SOURCES += \
-        ball.cpp \
-        game.cpp \
-        main.cpp \
-        player.cpp
+SOURCES +=
 
-HEADERS += \
-    ball.h \
-    game.h \
-    player.h
+HEADERS +=
