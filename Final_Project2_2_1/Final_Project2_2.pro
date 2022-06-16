@@ -11,14 +11,6 @@ CONFIG(debug, debug|release){
     LIBS += -lsfml-audio -lsfml-graphics -lsfml-network -lsfml-system -lsfml-window
 }
 SOURCES += \
-        bullet.cpp \
-        enemy.cpp \
-        game.cpp \
-        main.cpp \
-        player.cpp
+        main.cpp
 
-HEADERS += \
-    bullet.h \
-    enemy.h \
-    game.h \
-    player.h
+HEADERS +=
