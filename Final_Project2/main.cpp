@@ -187,9 +187,9 @@ int main()
 
     sf::Text text, score_, point_, points, scores;
     text.setFont(font);
-    text.setString("WELCOME... LET'S RIDE!!!");
+    text.setString("WELCOME. LET'S RIDE!!! press Enter");
     text.setCharacterSize(50);
-    text.setPosition(150, 700);
+    text.setPosition(50, 700);
     text.setFillColor(sf::Color::Red);
 
     score_.setFont(font);
