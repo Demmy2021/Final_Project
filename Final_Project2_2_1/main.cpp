@@ -11,15 +11,14 @@ int main()
     float move_rocket = 0.8;
     float move_background = 0.08;
     float scale;
-    //    int kill = 0;
     float score = 0;
-    //    int fiu = 0;
+    int level = 0;
 
-    sf::SoundBuffer buffer, screen, collide, game_over;
+    sf::SoundBuffer game_over, buffer, screen, collide;
     buffer.loadFromFile("bonus.wav");
     screen.loadFromFile("intro.wav");
     collide.loadFromFile("collide.wav");
-    game_over.loadFromFile("gameover.wav");
+    game_over.loadFromFile("gameover1.wav");
 
     sf::Sound sound_buffer, sound_screen, sound_collide, sound_gameover;
     sound_buffer.setBuffer(buffer);
@@ -58,10 +57,10 @@ int main()
     rocket.setScale(0.06, 0.06);
     sf::Vector2f rocket_position(440, 750);
 
-    sf::Vector2f background_position(0, -450);
+    sf::Vector2f background_position(0, -2950);
     background.setPosition(background_position);
     background.setTexture(texture);
-    background.setScale(sf::Vector2f(2.17, 1.16));
+    background.setScale(sf::Vector2f(3.67, 3.16));
 
     sf::Sprite rock[800];
     for (int i = 0; i < 800; i++) {
@@ -76,7 +75,6 @@ int main()
         diamond[i].setScale(sf::Vector2f(0.1, 0.1));
         diamond[i].setPosition(sf::Vector2f(rand() % 1000, rand() % 9000000 * (-1)));
     }
-
     sf::Font font;
     font.loadFromFile("fn.otf");
 
@@ -112,9 +110,7 @@ int main()
     sf::RectangleShape hitbox_rocket;
     hitbox_rocket.setSize(sf::Vector2f(20, 60));
     sf::Vector2f hitbox_rocket_position(rocket_position.x + 30, rocket_position.y + 10);
-
     sf::RenderWindow window(sf::VideoMode(1000, 900), "Dodge and Kill");
-
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -150,25 +146,25 @@ int main()
         hitbox_rocket.setPosition(hitbox_rocket_position);
         background.setPosition(background_position);
         window.clear(sf::Color::Black);
-//        for (size_t i = 0; i < hearts.size(); i--) {
-            if (hearts.size() == 4)  {
+
+        for (size_t j = 0; j < hearts.size(); j--) {
+            if (level == 0) {
                 sound_screen.play();
                 window.draw(background);
                 window.draw(rocket);
                 window.draw(text);
             }
-            for (size_t j = 0; j < hearts.size(); j--) {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && hearts.size() > 0) hearts.size() == 4;
-            for (int i = 0; i < 800; i++)  {
-                rock[i].getGlobalBounds();
-                if (rock[i].getGlobalBounds().intersects(hitbox_rocket.getGlobalBounds()))
-                {
-                    rock[i].setPosition(1000,1000);
-                    hearts.pop_back();
-                    sound_collide.play();
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && level < 2) level = 1;
+            if (level == 1) {
+                for (int i = 0; i < 800; i++)  {
+                    rock[i].getGlobalBounds();
+                    if (rock[i].getGlobalBounds().intersects(hitbox_rocket.getGlobalBounds())) {
+                        rock[i].setPosition(1000,1000);
+                        hearts.pop_back();
+                        sound_collide.play();
+                        break;
+                    }
                 }
-            }
-            if (hearts.size() > 0) {
                 for (int i = 0; i < 25; i++) {
                     diamond[i].getGlobalBounds();
                     if (diamond[i].getGlobalBounds().intersects(hitbox_rocket.getGlobalBounds())) {
@@ -182,7 +178,6 @@ int main()
                 score = score + 0.01;
                 window.draw(background);
                 window.draw(rocket);
-
                 for (int k = 0; k < 800; k++) {
                     sf::Vector2f rock_position(rock[k].getPosition());
                     rock[k].setPosition(rock_position.x, rock_position.y + 0.8);
@@ -199,9 +194,12 @@ int main()
                 window.draw(points);
                 scores.setString(std::to_string(score));
                 window.draw(scores);
-                //GAME OVER SOUND
-//                sound_gameover.play();
+                if (hearts.size() == 0) {
+                    sound_gameover.play();
+                    break;
+                }
             }
+            break;
         }
         if (hearts.size() == 0) {
             window.draw(background);
@@ -209,8 +207,6 @@ int main()
             window.draw(score_);
             point_.setString(std::to_string(score));
             window.draw(point_);
-//            sound_gameover.play();
-            // AFTER ENTER SOUND
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && hearts.size() == 0) {
             while (true) {
